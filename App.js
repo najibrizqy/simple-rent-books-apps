@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Signin from './src/Screens/AuthScreens/Signin';
 import Signup from './src/Screens/AuthScreens/Signup';
 import Home from './src/Screens/HomeScreens/Home';
+import BookDetail from './src/Screens/HomeScreens/BookDetail';
 import History from './src/Screens/HomeScreens/History';
 import Profile from './src/Screens/HomeScreens/Profile';
 
@@ -26,27 +27,59 @@ const AuthStack = createStackNavigator({
 const AppStack = createStackNavigator({
   HomeScreen:{
     screen: Home,
+  },
+  DetailScreen:{
+    screen: BookDetail,
   }
 },{
-  defaultNavigationOptions: {
-    header: null
-  }
+  header:null,
+  headerMode: 'none',
+  navigationOptions: ({navigation}) => {
+    let tabBarVisible;
+    if (navigation.state.routes.length > 1) {
+      navigation.state.routes.map(route => {
+        if (route.routeName === "DetailScreen") {
+          tabBarVisible = false;
+        } else {
+          tabBarVisible = true;
+        }
+      });
+    }
+    return {
+      tabBarVisible
+    };
+  },
 });
 
-const HomeTabNavigator = createBottomTabNavigator({
+const HistoryStack = createStackNavigator({
+  HistoryScreen:{
+    screen: History,
+  },
+},{
+  defaultNavigationOptions:{
+    headerLeft: () => {
+      return <Icon type="AntDesign" name="arrowleft" style={{fontSize:30, marginLeft: 25}}/>
+    },
+    title: 'History',
+    headerTitleStyle: {fontSize:18,fontWeight:'bold'}
+  },
+  headerLayoutPreset: 'center'
+})
+
+const TabNavigator = createBottomTabNavigator({
   HomeTab: {
     screen: AppStack,
     navigationOptions: {
       tabBarIcon: ({ tintColor }) => (  
-        <Icon type="FontAwesome" name="home" style={{fontSize:20, color:`${tintColor}`}}/>
+        <Icon type="AntDesign" name="home" style={{fontSize:30, color:`${tintColor}`}}/>
       )
     },
   },
   HistoryTab: {
-    screen: History,
+    screen: HistoryStack,
     navigationOptions: {
       tabBarIcon: ({ tintColor }) => (
-        <Icon type="FontAwesome" name="history" style={{fontSize:20, color:`${tintColor}`}}/>
+        <Icon type="MaterialIcons" name="history" style={{fontSize:30, color:`${tintColor}`}}/>
       )
     },
   },
@@ -54,7 +87,7 @@ const HomeTabNavigator = createBottomTabNavigator({
     screen: Profile,
     navigationOptions: {
       tabBarIcon: ({ tintColor }) => (
-        <Icon type="FontAwesome" name="user-circle" style={{fontSize:20, color:`${tintColor}`}}/>
+        <Icon type="EvilIcons" name="user" style={{fontSize:35, color:`${tintColor}`}}/>
       )
     },
     
@@ -70,7 +103,7 @@ const HomeTabNavigator = createBottomTabNavigator({
 
 const AppNavigator = createSwitchNavigator({
   Auth: AuthStack,
-  App: HomeTabNavigator
+  App: TabNavigator
 },{
   initialRouteName: 'Auth'
 })

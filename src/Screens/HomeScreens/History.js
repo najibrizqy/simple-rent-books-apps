@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from "react-native";
-import { Container, Content } from 'native-base';
+import { StyleSheet, View, Text, Image } from "react-native";
 
-// import Footer from '../Components/Footer';
+import empty from '../../Img/empty.png';
 
 export default class History extends Component {
   render() {
     return (
-      <View>
-        <Text>History</Text>
+      <View style={{alignItems:"center",marginTop: '50%'}}>
+        <Image source={empty} />
+        <Text style={styles.emptyTitle}>History Empty</Text>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-    footer:{
-        backgroundColor: "#FFFFFF",
-        elevation:15,
-    },
-    iconFooter:{
-        fontSize: 20
-    }
+  emptyTitle:{
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: "#303031",
+  }
 });
