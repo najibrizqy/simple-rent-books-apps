@@ -1,11 +1,42 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, ScrollView, Image } from "react-native";
+import { StyleSheet, View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
+import AsyncStorage from '@react-native-community/async-storage';
+import {connect} from 'react-redux';
 
+import { getProfile } from '../../Publics/Actions/user';
 import background from '../../Img/background.png';
 import avatar from '../../Img/user.png';
 
-export default class Profile extends Component {
-  render() {
+class Profile extends Component {
+  constructor(props){
+    super(props)
+    this.state={
+      userData: [],
+    }
+  }
+
+  handleSignout = () => {
+    AsyncStorage.clear();
+    this.props.navigation.navigate('SigninScreen')
+  }
+
+  componentDidMount = () => {
+    AsyncStorage.getItem('token', (err,res)=>{
+      if(res){
+        this.props.dispatch(getProfile(res))
+        .then((result) => {
+          this.setState({
+            userData: this.props.user.userProfile
+          }, ()=>{console.log(this.state)})
+        })
+      }
+      console.log(err, res)
+    })
+  }
+
+  render = () => {
+    const {userData} = this.state
+    console.log("USER DATA", userData)
     return (
         <View style={styles.container}>
           {/* <ScrollView showsVerticalScrollIndicator={false}> */}
@@ -17,10 +48,15 @@ export default class Profile extends Component {
             <View style={styles.wrapper}>
               <View style={styles.card}></View>
               <View style={styles.wrapperProfile}>
-                <Text style={styles.name}>Najibullah Rizqy F</Text>
-                <Text style={styles.username}>@najibrizqy136</Text>
+                <Text style={styles.name}>{userData.fullname}</Text>
+                <Text style={styles.username}>@{userData.username}</Text>
                 <Text style={styles.idCardTitle}>ID CARD USER</Text>
-                <Text style={styles.valueIdCard}>17</Text>
+                <Text style={styles.valueIdCard}>{userData.id}</Text>
+                <TouchableOpacity activeOpacity={.8} onPress={this.handleSignout}>
+                    <View style={styles.btnSignout}>
+                        <Text style={styles.textSignout}>Sign Out</Text>
+                    </View>
+                </TouchableOpacity>
               </View>
             </View>
           {/* </ScrollView> */}
@@ -28,6 +64,14 @@ export default class Profile extends Component {
     );
   }
 }
+
+const mapStateToProps = state =>{
+  return{
+    user: state.user
+  } 
+}
+
+export default connect (mapStateToProps) (Profile)
 
 const styles = StyleSheet.create({
   container: {
@@ -61,7 +105,7 @@ const styles = StyleSheet.create({
   idCardTitle:{
     alignSelf: 'center',
     fontSize: 30,
-    marginTop: 40,
+    marginTop: 20,
     color: 'gray',
   },
   valueIdCard:{
@@ -98,5 +142,22 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     shadowOpacity: 0.9,
+  },
+  btnSignout:{
+    width: 150,
+    height: 35,
+    backgroundColor: "#DC143C",
+    color: '#FFF',
+    justifyContent: 'center',
+    alignSelf: "center",
+    borderRadius: 30,
+    marginTop: 20
+  },
+  textSignout:{
+    color: "#FFF",
+    fontSize: 15,
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    lineHeight: 20
   }
 });

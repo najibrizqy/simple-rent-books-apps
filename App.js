@@ -1,9 +1,11 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
-import { Icon } from 'native-base';
+import { Icon, Root } from 'native-base';
+import {Provider} from 'react-redux';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
+import store from './src/Publics/Store';
 import Signin from './src/Screens/AuthScreens/Signin';
 import Signup from './src/Screens/AuthScreens/Signup';
 import Home from './src/Screens/HomeScreens/Home';
@@ -57,9 +59,6 @@ const HistoryStack = createStackNavigator({
   },
 },{
   defaultNavigationOptions:{
-    headerLeft: () => {
-      return <Icon type="AntDesign" name="arrowleft" style={{fontSize:30, marginLeft: 25}}/>
-    },
     title: 'History',
     headerTitleStyle: {fontSize:18,fontWeight:'bold'}
   },
@@ -112,9 +111,11 @@ const AppContainer = createAppContainer(AppNavigator);
 export default class App extends Component{
   render(){
     return(
-      <Fragment>
-        <AppContainer />
-      </Fragment>
+      <Provider store={store}>
+        <Root>
+          <AppContainer />
+        </Root>
+      </Provider>
     )
   }
 }
