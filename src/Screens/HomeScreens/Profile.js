@@ -41,7 +41,6 @@ class Profile extends Component {
         <View style={styles.container}>
           {/* <ScrollView showsVerticalScrollIndicator={false}> */}
             <View style={styles.background}>
-              <Image source={background} style={styles.image} />
             </View>
 
             <Image source={avatar} style={styles.avatar} />
@@ -135,13 +134,8 @@ const styles = StyleSheet.create({
   background: {
     width: '100%',
     position: 'relative',
-    backgroundColor: 'blue',
+    backgroundColor: '#007bff',
     height: 250,
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-    shadowOpacity: 0.9,
   },
   btnSignout:{
     width: 150,

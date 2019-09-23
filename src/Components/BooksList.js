@@ -34,7 +34,7 @@ class BooksList extends Component {
                         this.props.books.booksList.length !== 0 ? 
                             data.map((res, index) => {
                                 return(
-                                    <TouchableOpacity activeOpacity={.7} style={styles.bookWrap} onPress={() => {this.props.navigation.navigate('DetailScreen')}}  key={index}>
+                                    <TouchableOpacity activeOpacity={.7} style={styles.bookWrap} onPress={() => {this.props.navigation.navigate('DetailScreen', {item: res})}}  key={index}>
                                         <View style={styles.bookCard}>
                                             <Image source={{uri:`${res.image}`}} style={styles.bookImage} />
                                         </View>
