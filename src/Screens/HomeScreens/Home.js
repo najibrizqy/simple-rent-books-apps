@@ -6,7 +6,6 @@ import Carousel from '../../Components/Carousel';
 import BooksList from '../../Components/BooksList';
 
 const Home= (props) => {
-  console.log("PROPS", props)
     return (
       <Fragment>
         {/* Header */}
