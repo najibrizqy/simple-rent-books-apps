@@ -10,7 +10,7 @@ export default class BookDetail extends Component {
         return(
             <View style={styles.container}>
                 <View style={styles.coverImage}>
-                    <Icon type="AntDesign" name="arrowleft" style={styles.btnBack}/>
+                    <Icon type="AntDesign" name="arrowleft" style={styles.btnBack}  onPress={() => this.props.navigation.goBack()}/>
                     <Image source={potter} style={styles.backgroundCover} />
                     <Text style={styles.title}>Harry Potter and the{"\n"}Chamber of Secrets</Text>
                     <Image source={harry} style={styles.bookCover} />

@@ -1,9 +1,58 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text } from "react-native";
-import { Container, Content, Form, Item, Input, Label, Button } from 'native-base';
+import { Container, Content, Form, Item, Input, Label, Button, Toast } from 'native-base';
 import { Col, Row } from 'react-native-easy-grid';
+import { connect } from 'react-redux';
 
-export default class Signin extends Component {
+import { register } from '../../Publics/Actions/user';
+
+class Signup extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      formData: {
+        username: '',
+        full_name: '',
+        email: '',
+        password: ''
+      },
+      showToast: false,
+    }
+  }
+
+  handleChange = (name, value) => {
+    let newFormData = {...this.state.formData}
+    newFormData[name] = value
+    this.setState({
+      formData: newFormData
+    })
+    console.log(newFormData)
+  }
+
+  handleSubmit = () => {
+    this.props.dispatch(register(this.state.formData))
+    .then(async (res) => {
+      Toast.show({
+        text: 'Successful Registration',
+        buttonText: "Okay",
+        type: "success",
+        position:'top',
+        duration:4000,
+      })
+      this.props.navigation.navigate('SigninScreen')
+    })
+    .catch(()=>{
+      console.log(this.props.user.errMsg)
+      Toast.show({
+        text: this.props.user.errMsg,
+        buttonText: "Okay",
+        type: "danger",
+        position:'top',
+        duration:4000,
+      })
+    })
+  }
+
   render() {
     return (
       <Container style={styles.container}>
@@ -14,21 +63,21 @@ export default class Signin extends Component {
             <Form style={styles.formSignin}>
                 <Item floatingLabel>
                     <Label>Username</Label>
-                    <Input maxLength={15}/>
+                    <Input maxLength={15} onChangeText={(text)=>this.handleChange('username',text)}/>
                 </Item>
                 <Item floatingLabel>
                     <Label>Full Name</Label>
-                    <Input maxLength={30}/>
+                    <Input maxLength={30} onChangeText={(text)=>this.handleChange('full_name',text)} />
                 </Item>
                 <Item floatingLabel>
                     <Label>Email</Label>
-                    <Input />
+                    <Input keyboardType='email-address' autoCompleteType='email' onChangeText={(text)=>this.handleChange('email',text)} />
                 </Item>
                 <Item floatingLabel>
                     <Label>Password</Label>
-                    <Input secureTextEntry={true} maxLength={16}/>
+                    <Input secureTextEntry={true} maxLength={16} onChangeText={(text)=>this.handleChange('password',text)} />
                 </Item>
-                <Button full dark rounded style={styles.btnSignin}>
+                <Button full dark rounded style={styles.btnSignin} onPress={this.handleSubmit}>
                   <Text style={styles.textSignin}>Sign up</Text>
                 </Button>
             </Form>
@@ -42,6 +91,14 @@ export default class Signin extends Component {
     );
   }
 }
+
+const mapStateToProps = state =>{
+  return {
+    user : state.user
+  }
+}
+
+export default connect (mapStateToProps) (Signup)
 
 const styles = StyleSheet.create({
     container: {
