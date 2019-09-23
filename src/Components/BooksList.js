@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { StyleSheet, View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { connect } from 'react-redux';
+import { Spinner } from 'native-base';
 
 import { getBooks } from '../Publics/Actions/books';
 
@@ -22,7 +23,6 @@ class BooksList extends Component {
 
     render(){
         const {data} = this.state;
-        console.log("IKI DATA", data)
         return(
             <View style={styles.content}>
               <View>
@@ -31,7 +31,7 @@ class BooksList extends Component {
               <View style={styles.scrollList}>
                   <View style={styles.wrap}>
                     {
-                        data ? 
+                        this.props.books.booksList.length !== 0 ? 
                             data.map((res, index) => {
                                 return(
                                     <TouchableOpacity activeOpacity={.7} style={styles.bookWrap} onPress={() => {this.props.navigation.navigate('DetailScreen')}}  key={index}>
@@ -60,8 +60,13 @@ class BooksList extends Component {
                                     </TouchableOpacity>
                                 )
                             })
-                        :   <Text>
-                                Loading...
+                        :   this.props.books.isLoading ? 
+                            <View style={styles.content}>
+                                <Spinner color='blue' />
+                            </View>
+                        :   
+                            <Text>
+                                Book Not Found.
                             </Text>
                     }
 
@@ -125,7 +130,7 @@ const styles = StyleSheet.create({
         marginBottom: 5
     },
     informWrapper: {
-        width: '100%', 
+        width: '100%',
         flexDirection:'row'
     }
 });
