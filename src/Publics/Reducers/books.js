@@ -1,5 +1,6 @@
 const initialState = {
     booksList: [],
+    totalPage: 0,
     isLoading: false,
     isFulfilled: false,
     isRejected: false,
@@ -21,11 +22,12 @@ const initialState = {
           isRejected: true,
         };
       case 'GET_BOOKS_FULFILLED':
+          action.payload.data.values.map(book => state.booksList.push(book))
         return {
           ...state,
           isLoading: false,
           isFulfilled: true,
-          booksList: action.payload.data,
+          totalPage: action.payload.data.totalPage
         };
       case 'GET_BOOKS_NEW_RELEASE_FULFILLED':
         return{
