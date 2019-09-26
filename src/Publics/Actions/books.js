@@ -2,10 +2,10 @@ import Axios from 'axios';
 
 import{HOST} from '../../Config'
 
-export const getBooks = () => {
+export const getBooks = (page) => {
   return {
     type: 'GET_BOOKS',
-    payload: Axios.get(`${HOST}/books`),
+    payload: Axios.get(`${HOST}/books?page=${page}`),
   }
 }
 

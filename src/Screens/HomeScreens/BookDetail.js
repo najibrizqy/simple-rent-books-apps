@@ -2,22 +2,29 @@ import React, {Component} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import { Icon } from 'native-base';
 
-import potter from '../../Img/potter.png';
-import harry from '../../Img/harry.png';
-
 export default class BookDetail extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            data : props.navigation.getParam('item')
+        }
+    }
+
     render(){
+        const {data} = this.state
         return(
             <View style={styles.container}>
                 <View style={styles.coverImage}>
                     <Icon type="AntDesign" name="arrowleft" style={styles.btnBack}  onPress={() => this.props.navigation.goBack()}/>
-                    <Image source={potter} style={styles.backgroundCover} />
-                    <Text style={styles.title}>Harry Potter and the{"\n"}Chamber of Secrets</Text>
-                    <Image source={harry} style={styles.bookCover} />
+                    <Image source={{uri: `${data.image}`}} style={styles.backgroundCover} />
+                    <View style={{width: 200}}>
+                        <Text style={styles.title}>{data.title}</Text>
+                    </View>
+                    <Image source={{uri: `${data.image}`}} style={styles.bookCover} />
                 </View>
                 <View style={styles.wrapDescription}>
                     <Text style={styles.description}>
-                        Harry Potter and the Chamber of Secrets is a fantasy novel written by British author J. K. Rowling and the second novel in the Harry Potter series. The plot follows Harry's second year at Hogwarts School of Witchcraft and Wizardry, during which a series of messages on the walls of the school's corridors warn that the "Chamber of Secrets" has been opened and that the "heir of Slytherin" would kill all pupils who do not come from all-magical families. These threats are found after attacks which leave residents of the school petrified. Throughout the year, Harry and his friends Ron and Hermione investigate the attacks.
+                        {data.description}
                     </Text>
                 </View>
                 <View style={styles.bottom}>
@@ -38,7 +45,8 @@ const styles = StyleSheet.create({
         top: 10,
         left: 25,
         zIndex: 2,
-        color: '#FFF'
+        color: '#FFF',
+        elevation: 5
     }, 
     container: {
         position: 'relative',
@@ -82,7 +90,8 @@ const styles = StyleSheet.create({
         color: "#FFF",
         fontSize: 20,
         bottom: 10,
-        left: 25
+        left: 25,
+        elevation: 5
     },
     btnRent:{
         width: 180,

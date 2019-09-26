@@ -20,7 +20,7 @@ const Home= (props) => {
         </View>
 
         <View style={styles.container}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
             <Carousel />
             <BooksList {...props} />
           </ScrollView>
